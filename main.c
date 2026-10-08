@@ -5,8 +5,7 @@
 
 
 typedef struct {
-	//
-	char username[100];
+
 	//
 	char book_name[100];
 	//
@@ -14,12 +13,12 @@ typedef struct {
 	//
 	char book_pg[100];
 	//
-	char book_author[40];
+	char book_author[100];
 	//
 	int choice;
 	//
-} Data;
-
+	
+} Book;
 
 
 
@@ -37,11 +36,16 @@ void sound_effect(void){
 int main (void){
 	
 	
-	Data User;
+	Book book[100];	
+	
+	int count = 0;
+		
+	char username[100];
 	
 	printf("Please enter your name:  ");
-	scanf("%s", User.username);
+	scanf("%s", username);
 	
+	int choice;
  
     while(1){
     	
@@ -55,42 +59,86 @@ int main (void){
     	
     	
     	printf("Please enter any option:  ");
-    	scanf("%d", &User.choice);
+    	
+        if (scanf("%d", &choice) != 1) {
+        	
+        	
+            while (getchar() != '\n');
+            
+            printf("\nPlease enter a valid number!\n");
+            continue;
+}
     	
     	
-    	switch(User.choice){
+    	switch(choice){
     		
     		
        	  case 1:
     		
-    	        
-    	        
-    	        
+    	    if (count >= 100)  {
+    	    	
+    	    	
+    	    	printf("\nBook list is full!\n");
+    	    	break;
+			}  
+			
+			
+    	    
+    	       
     	        
     			printf("\nPlease enter book name: ");
-    			scanf("%s", User.book_name);
+    			scanf(" %99[^\n]", book[count].book_name);
     			
     			
     			printf("\nPlease enter book's author: ");
-    			scanf("%s", User.book_author);
+    			scanf(" %99[^\n]", book[count].book_author);
     			
     			
     			printf("\nPlease enter book value:  ");
-    			scanf("%.2f\n", User.book_value);
-    			break;
-	    
+    			           
+    			if (scanf("%lf", &book[count].book_value) != 1) {
+    				
+                     while (getchar() != '\n');
+                     printf("\nInvalid value! Book was not added.\n");
+                     
+                   break;
+                }
+    			Sleep(2000);
+    			
+	            printf("\nSuccessfully added!\n");
+	            sound_effect();
+	            
+	            count++;
+	            break;
 		
 		  case 2:
 	    	
-	    	
-	    	
-	    	    printf(User.book_name);
+	    	if (count == 0) {
+	    		
+              
+			  printf("\nNo books yet.\n");
+			  
+			  
+            }
+            
+             for (int i = 0; i < count; i++){
+			   
+			 printf("\n---------------------------------------\n");
+			 
+			 
+			 printf("\n###########  %d. Chosen Book    ###########\n", i + 1);
+	    	  printf("%s\n", book[i].book_name);
+              printf("%s\n", book[i].book_author);
+              printf("%.2f\n", book[i].book_value);
+	         printf("\n---------------------------------------\n");  
+	    	    
+	          }
 	    	    break;
 	      	
 	      case 3:
 	    	
 	    	
-	    	    printf("\nGoodbye %s, Thank you for choosing us!\n", User.username);
+	    	    printf("\nGoodbye %s, Thank you for choosing us!\n", username);
 	    	
 	    	    return 0;
 	    	
